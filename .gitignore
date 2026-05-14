@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Tooling
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Runtime files
+logs/
+*.log
+*.db
+*.sqlite
+*.sqlite3
+cache/
+database/cortx_lance/
+cortx-venv/
+
+# Playwright
+playwright-report/
+
+# OS/Editor
+.DS_Store
+Thumbs.db
+.vscode/*.code-workspace

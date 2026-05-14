@@ -1,0 +1,451 @@
+/* ============================================================
+   CortX — Dark Theme (Premium)
+   ============================================================ */
+
+QMainWindow {
+    background: #0D1117;
+    color: #E6EDF3;
+    font-family: "Segoe UI", "Inter", sans-serif;
+    font-size: 13px;
+}
+
+QWidget#RootContainer {
+    background: #0D1117;
+}
+
+QWidget#ChatArea {
+    background: #0D1117;
+}
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+
+QWidget#Sidebar {
+    background: #010409;
+    border: none;
+}
+
+QWidget#SidebarContent {
+    background: transparent;
+}
+
+QFrame#SidebarTop {
+    background: transparent;
+    border: none;
+}
+
+/* New Chat Button — glow border on hover */
+QPushButton#NewChatBtn {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #1A2233, stop:1 #1E2940);
+    color: #E6EDF3;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    padding: 8px 14px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+QPushButton#NewChatBtn:hover {
+    border: 2px solid qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #0AADEA, stop:0.5 #2CC4FF, stop:1 #0AADEA);
+    color: #FFFFFF;
+}
+
+QPushButton#NewChatBtn:pressed {
+    border: 2px solid #0E97D4;
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #152030, stop:1 #1A2940);
+}
+
+/* Sidebar scroll */
+QScrollArea#SidebarScroll {
+    background: transparent;
+    border: none;
+}
+
+QWidget#SidebarList {
+    background: transparent;
+}
+
+/* Chat items with hover */
+QFrame#ChatItem {
+    background: transparent;
+    border: none;
+    border-radius: 10px;
+    padding: 0px 4px;
+}
+
+QFrame#ChatItem:hover {
+    background: rgba(28, 167, 236, 0.06);
+    border: 1px solid rgba(28, 167, 236, 0.35);
+    border-radius: 10px;
+}
+
+QFrame#ChatItem[active="true"] {
+    background: rgba(28, 167, 236, 0.10);
+    border: 1px solid #1CA7EC;
+    border-radius: 10px;
+}
+
+QLabel#ChatItemTitle {
+    color: #C9D1D9;
+    font-size: 13px;
+    padding: 0px;
+}
+
+QLineEdit#ChatItemEditor {
+    background: #0D1117;
+    color: #E6EDF3;
+    border: 1px solid #1CA7EC;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 13px;
+}
+
+QPushButton#ChatItemDelete,
+QPushButton#ChatItemRename {
+    background: transparent;
+    color: #6E7681;
+    border: none;
+    font-size: 13px;
+    border-radius: 4px;
+}
+
+QPushButton#ChatItemDelete:hover {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #3D1F28, stop:1 #5A2333);
+    color: #F85149;
+}
+
+QPushButton#ChatItemRename:hover {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #112F4A, stop:1 #184168);
+    color: #1CA7EC;
+}
+
+/* Sidebar bottom — brand + theme */
+QFrame#SidebarBottom {
+    background: transparent;
+    border-top: 1px solid #21262D;
+}
+
+QLabel#SidebarThemeLabel {
+    color: #6E7681;
+    font-size: 12px;
+}
+
+QLabel#SidebarBrand {
+    color: #1CA7EC;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+QAbstractButton#ThemeSwitch {
+    background: transparent;
+    border: none;
+}
+
+/* Sidebar divider */
+QFrame#SidebarDivider {
+    background: #21262D;
+    border: none;
+}
+
+QSplitter#RootSplitter::handle {
+    background: #1a2430;
+}
+
+QSplitter#RootSplitter::handle:hover {
+    background: #2496d8;
+}
+
+/* ============================================================
+   CHAT TOP BAR — sidebar toggle
+   ============================================================ */
+
+QWidget#ChatTopBar {
+    background: #0f141d;
+    border-bottom: 1px solid #222c38;
+}
+
+QPushButton#SidebarToggle {
+    background: #121b26;
+    color: #95a9bc;
+    border: 1px solid #2d3b4b;
+    border-radius: 9px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+QPushButton#SidebarToggle:hover {
+    border: 1px solid #1ca7ec;
+    color: #cdeeff;
+}
+
+QPushButton#ExportChatBtn {
+    background: #121b26;
+    color: #9fb7c9;
+    border: 1px solid #2d3b4b;
+    border-radius: 9px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+QPushButton#ExportChatBtn:hover {
+    border: 1px solid #1CA7EC;
+    color: #d8efff;
+}
+
+QPushButton#ExportChatBtn:pressed {
+    background: #0f1620;
+}
+
+QPushButton#MotionPresetBtn {
+    background: #121b26;
+    color: #a6bbcf;
+    border: 1px solid #2d3b4b;
+    border-radius: 9px;
+    padding: 6px 10px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+QPushButton#MotionPresetBtn:hover {
+    border: 1px solid #1CA7EC;
+    color: #d8efff;
+}
+
+QPushButton#MotionPresetBtn:pressed {
+    background: #0f1620;
+}
+
+/* ============================================================
+   CHAT AREA
+   ============================================================ */
+
+QWidget#ChatWidget,
+QWidget#ChatViewport {
+    background: transparent;
+}
+
+QScrollArea#ChatScroll {
+    background: #0D1117;
+    border: none;
+}
+
+QScrollBar:vertical {
+    width: 8px;
+    margin: 4px 2px;
+    background: transparent;
+}
+
+QScrollBar::handle:vertical {
+    background: #2A3A4D;
+    border-radius: 4px;
+    min-height: 20px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background: #3A516A;
+}
+
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+    height: 0px;
+}
+
+/* Welcome message */
+QLabel#WelcomeMessage {
+    color: #4b5765;
+    font-size: 28px;
+    font-weight: 300;
+    padding: 96px 40px;
+}
+
+/* --- Message Cards --- */
+
+QFrame#MessageCard_user {
+    background: #0f1319;
+    border: 1px solid #252d37;
+    border-radius: 16px;
+}
+QFrame#MessageCard_user[isPrevious="true"][hovered="true"] {
+    background: #1b402f;
+    border: 1px solid #2a7254;
+}
+QFrame#MessageCard_user[contextTarget="true"] {
+    background: #203246;
+    border: 1px solid #4fa5e4;
+}
+
+QFrame#MessageCard_assistant {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #131b26, stop:1 #1a2433);
+    border: 1px solid #2a3442;
+    border-radius: 16px;
+}
+QFrame#MessageCard_assistant[isPrevious="true"][hovered="true"] {
+    background: #1a2735;
+    border: 1px solid #3b5671;
+}
+QFrame#MessageCard_assistant[contextTarget="true"] {
+    background: #1d2f43;
+    border: 1px solid #4fa5e4;
+}
+
+QFrame#MessageCard_status {
+    background: transparent;
+    border: none;
+}
+
+QLabel#MessageBody {
+    color: #FFFFFF;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+QTextBrowser#UserBody {
+    background: transparent;
+    color: #e8edf2;
+    font-size: 14px;
+    border: none;
+    selection-background-color: #264F78;
+}
+
+QLabel#UserContextHint {
+    color: #9fb0c2;
+    background: #182430;
+    border: 1px solid #2c4152;
+    border-radius: 8px;
+    padding: 3px 8px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+SpinnerWidget#StatusSpinner {
+    qproperty-spinnerColor: #1CA7EC;
+}
+
+QLabel#StatusBody {
+    color: #1CA7EC;
+    font-size: 13px;
+    font-style: italic;
+}
+
+/* Assistant markdown body */
+QTextBrowser#AssistantBody {
+    background: transparent;
+    color: #E6EDF3;
+    font-size: 14px;
+    line-height: 1.65;
+    border: none;
+    selection-background-color: #264F78;
+}
+
+/* Sources */
+QFrame#SourceSeparator {
+    background: #21262D;
+    border: none;
+}
+
+QLabel#SourceHeader {
+    color: #6E7681;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+QLabel#SourceLink {
+    color: #1CA7EC;
+    font-size: 12px;
+}
+
+/* ============================================================
+   INPUT BAR — gradient glow on hover
+   ============================================================ */
+
+QWidget#InputBar {
+    background: #0D1117;
+    border: none;
+}
+
+QWidget#InputContainer {
+    background: #151c24;
+    border: 2px solid #30363D;
+    border-radius: 20px;
+}
+
+QWidget#InputContainer:hover {
+    border: 2px solid qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #0AADEA, stop:0.5 #2CC4FF, stop:1 #0AADEA);
+}
+
+QWidget#InputContextStrip {
+    background: #10161f;
+    border: 1px solid #2e3a47;
+    border-radius: 10px;
+}
+
+QWidget#InputContextStrip[hasTarget="true"] {
+    border: 1px solid #4a8fbe;
+}
+
+QLabel#InputContextMode {
+    background: #223447;
+    color: #b9d8ee;
+    border-radius: 8px;
+    padding: 3px 9px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+QLabel#InputContextPreview {
+    color: #9aa7b4;
+    font-size: 12px;
+}
+
+QPushButton#InputContextClear {
+    background: transparent;
+    color: #7f8b98;
+    border: none;
+    border-radius: 6px;
+    font-size: 11px;
+}
+
+QPushButton#InputContextClear:hover {
+    background: #1d2a37;
+    color: #c8d2dd;
+}
+
+QTextEdit#Composer {
+    background: transparent;
+    color: #E6EDF3;
+    border: none;
+    padding: 8px 6px;
+    font-size: 14px;
+}
+
+QTextEdit#Composer[contextPrefill="true"] {
+    color: #9eaab8;
+}
+
+/* Send Button — glow border on hover */
+QPushButton#SendButton {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #0E7BAF, stop:1 #1CA7EC);
+    color: #FFFFFF;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+QPushButton#SendButton:hover {
+    border: 1px solid #2CC4FF;
+}
+
+QPushButton#SendButton:pressed {
+    border: 1px solid #0A8FCC;
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #0A6C96, stop:1 #0E97D4);
+}
+
+QPushButton#SendButton:disabled {
+    background: #21262D;
+    color: #484F58;
+    border: none;
+}

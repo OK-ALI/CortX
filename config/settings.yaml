@@ -1,0 +1,32 @@
+app:
+  name: Cortx
+  log_level: INFO
+  max_urls: 8
+  min_words_per_page: 80
+
+network:
+  search_timeout_seconds: 10
+  httpx_timeout_seconds: 12
+
+models:
+  local_model: llama3.1:8b-instruct-q5_K_M
+  enable_ollama_chains: true
+  enable_llm_synthesis: true
+  enable_llm_result_refinement: true
+  ollama_timeout_seconds: 45
+  ollama_keep_alive: 30m
+  warmup_ollama_on_start: true
+  unload_ollama_on_exit: true
+
+limits:
+  max_pages_for_synthesis: 5
+  max_words_per_page: 800
+  max_context_tokens: 4096
+
+cache:
+  ttl_seconds: 86400
+
+scraper:
+  user_agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
+  random_delay_min_seconds: 1
+  random_delay_max_seconds: 2
