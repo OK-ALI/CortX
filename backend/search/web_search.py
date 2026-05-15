@@ -5,6 +5,8 @@ from typing import overload, Literal
 from urllib.parse import quote_plus
 
 
+import time
+
 @dataclass
 class SearchResult:
     url: str
@@ -44,13 +46,13 @@ def _fallback_urls(queries: list[str]) -> list[str]:
 
 def _resolve_timelimit(time_sensitivity: str | None) -> str | None:
     if not time_sensitivity:
-        return None
+        return "m"  # Default to past month to ensure fresh results
     lowered = time_sensitivity.strip().lower()
     if lowered == "recent":
-        return "w"
+        return "w"  # Past week for specifically recent intents
     if lowered == "historical":
-        return "y"
-    return None
+        return None # No limit for historical
+    return "m"      # Default to past month for timeless to prefer updated pages
 
 
 def discover_search_results(
@@ -68,21 +70,28 @@ def discover_search_results(
 
         with DDGS() as ddgs:
             for query in queries:
-                try:
-                    if timelimit:
-                        try:
-                            results = ddgs.text(query, max_results=per_query, timelimit=timelimit)
-                        except TypeError:
+                retries = 3
+                for attempt in range(retries):
+                    try:
+                        if timelimit:
+                            try:
+                                results = ddgs.text(query, max_results=per_query, timelimit=timelimit)
+                            except TypeError:
+                                results = ddgs.text(query, max_results=per_query)
+                        else:
                             results = ddgs.text(query, max_results=per_query)
-                    else:
-                        results = ddgs.text(query, max_results=per_query)
-                    for item in results:
-                        href = item.get("href") or item.get("url")
-                        body = item.get("body") or item.get("text") or ""
-                        if href:
-                            discovered.append(SearchResult(url=href, snippet=str(body)))
-                except Exception:
-                    continue
+                        
+                        for item in results:
+                            href = item.get("href") or item.get("url")
+                            body = item.get("body") or item.get("text") or ""
+                            if href:
+                                discovered.append(SearchResult(url=href, snippet=str(body)))
+                        break  # Success
+                    except Exception:
+                        if attempt < retries - 1:
+                            time.sleep(1.5 * (attempt + 1))
+                        else:
+                            continue
     except Exception:
         pass
 

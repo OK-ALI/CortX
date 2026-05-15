@@ -68,6 +68,26 @@ class QueryWorker(QThread):
 			self.failed.emit(str(exc))
 
 
+class TitleWorker(QThread):
+	title_ready = pyqtSignal(str, str)
+
+	def __init__(self, pipeline: CortxPipeline, query: str, conversation_id: str, parent: QWidget | None = None) -> None:
+		super().__init__(parent)
+		self.pipeline = pipeline
+		self.query = query
+		self.conversation_id = conversation_id
+
+	def run(self) -> None:
+		try:
+			if self.pipeline.llm_client:
+				from backend.ai.lcel_chains import get_lcel_chains
+				title = get_lcel_chains(self.pipeline.llm_client).run_title_generation(self.query)
+				if title:
+					self.title_ready.emit(self.conversation_id, title)
+		except Exception:
+			pass
+
+
 class MainWindow(QMainWindow):
 	def __init__(self, pipeline: CortxPipeline, parent: QWidget | None = None) -> None:
 		super().__init__(parent)
@@ -275,11 +295,17 @@ class MainWindow(QMainWindow):
 
 		conversation_history = self._store.get_messages(self._current_conversation_id)
 		if not conversation_history:
+			# Temporary title while the LLM generates a better one
 			title = query[:50].strip()
 			if len(query) > 50:
 				title += "..."
 			self._store.rename_conversation(self._current_conversation_id, title)
 			self.sidebar.update_title(self._current_conversation_id, title)
+
+			# Fire background worker to generate a snappy LLM title
+			self._title_worker = TitleWorker(self.pipeline, query, self._current_conversation_id, parent=self)
+			self._title_worker.title_ready.connect(self._on_chat_renamed)
+			self._title_worker.start()
 
 		context_snapshot = self.input_bar.get_context_snapshot()
 		history_for_resolution = self._context_history_for_resolution(
@@ -365,29 +391,40 @@ class MainWindow(QMainWindow):
 
 	def _on_context_action_requested(self, action: str, context_text: str, context_id: str) -> None:
 		snippet = self._short_context(context_text)
+		auto_submit = False
 		if action == "reply":
 			prompt = "My follow-up question: "
 		elif action == "follow":
 			prompt = "Focus on: "
 		elif action == "update":
-			prompt = "Check latest updates on: "
+			prompt = "Check latest updates on this context."
+			auto_submit = True
 		else:
 			prompt = ""
 		self.input_bar.set_context_hint(action, snippet, context_id=context_id or None)
-		self.input_bar.set_prefill(prompt, muted=True)
+		if auto_submit:
+			self._on_submit_query(prompt)
+		else:
+			self.input_bar.set_prefill(prompt, muted=True)
 
 	def _on_selected_text_action_requested(self, action: str, selected_text: str) -> None:
 		snippet = self._short_context(selected_text)
+		auto_submit = False
 		if action == "ask":
 			prompt = "Question: "
 		elif action == "explain":
-			prompt = "Please explain this: "
+			prompt = f"Please explain this: '{snippet}'"
+			auto_submit = True
 		elif action == "update":
-			prompt = "Find latest updates on: "
+			prompt = f"Find latest updates on: '{snippet}'"
+			auto_submit = True
 		else:
 			prompt = ""
 		self.input_bar.set_context_hint(action, snippet, context_id=None)
-		self.input_bar.set_prefill(prompt, muted=True)
+		if auto_submit:
+			self._on_submit_query(prompt)
+		else:
+			self.input_bar.set_prefill(prompt, muted=True)
 
 	def _on_context_jump_requested(self, context_id: str) -> None:
 		self.chat_widget.focus_message(context_id)

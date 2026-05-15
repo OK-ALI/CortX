@@ -53,6 +53,22 @@ class FollowupIntentResolver:
         if action_type not in {"ask", "reply", "follow", "update"}:
             action_type = "ask"
         preview = " ".join(str(explicit_context.get("preview", "")).split()).strip()
+        
+        # If user selected specific text, completely bypass LLM context resolution 
+        # to guarantee the specific text is targeted.
+        if preview:
+            if query_clean:
+                standalone = f"{query_clean} (Context: '{preview}')"
+            else:
+                standalone = f"Target: '{preview}'"
+            return FollowupResolution(
+                standalone_query=standalone,
+                requires_context=True,
+                update_intent=action_type == "update",
+                context_focus=preview,
+                action_type=action_type,
+            )
+
         if llm_client is None:
             fallback_query = query_clean if not preview else f"{query_clean} {preview}".strip()
             return FollowupResolution(

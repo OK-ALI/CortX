@@ -47,6 +47,15 @@ _DEFAULT_PROMPTS: dict[str, str] = {
         "If the user asks for new/latest updates about prior topic, set update_intent=true and ensure standalone_query "
         "explicitly includes fresh/update wording."
     ),
+    "spell_system": (
+        "You are a strict query refiner and spell-checker. "
+        "Fix any grammatical or spelling mistakes in the user query while keeping its original meaning intact. "
+        "Return ONLY the corrected string and nothing else. No quotes, no preamble."
+    ),
+    "title_system": (
+        "You are a summarization assistant. Generate a snappy 2 to 4 word title for this chat based on the user query. "
+        "Return ONLY the title string and nothing else. No quotes, no preamble."
+    ),
 }
 
 
@@ -65,6 +74,8 @@ def _load_prompts(path: str | Path = "config/prompts.yaml") -> dict[str, str]:
         "ack_system": str(data.get("ack_lcel_system", _DEFAULT_PROMPTS["ack_system"])),
         "synthesis_system": str(data.get("synthesis_lcel_system", _DEFAULT_PROMPTS["synthesis_system"])),
         "followup_system": str(data.get("followup_lcel_system", _DEFAULT_PROMPTS["followup_system"])),
+        "spell_system": str(data.get("spell_lcel_system", _DEFAULT_PROMPTS["spell_system"])),
+        "title_system": str(data.get("title_lcel_system", _DEFAULT_PROMPTS["title_system"])),
     }
 
 
@@ -137,6 +148,18 @@ class LocalLCELChains:
             ),
             temperature=0.0,
         )
+        self._spell_chain = self._build_chain(
+            system_prompt=prompts["spell_system"],
+            human_template="User query to correct: {query}",
+            temperature=0.0,
+            num_predict=128,
+        )
+        self._title_chain = self._build_chain(
+            system_prompt=prompts["title_system"],
+            human_template="User query: {query}",
+            temperature=0.3,
+            num_predict=32,
+        )
 
     def _build_chain(self, system_prompt: str, human_template: str, temperature: float, num_predict: int = 512):
         prompt = ChatPromptTemplate.from_messages(
@@ -168,6 +191,12 @@ class LocalLCELChains:
 
     def run_intent(self, query: str) -> str:
         return str(self._intent_chain.invoke({"query": query}))
+
+    def run_spell_check(self, query: str) -> str:
+        return str(self._spell_chain.invoke({"query": query})).strip()
+
+    def run_title_generation(self, query: str) -> str:
+        return str(self._title_chain.invoke({"query": query})).strip()
 
     def run_queries(
         self,

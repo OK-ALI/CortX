@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from playwright.async_api import async_playwright
-from playwright_stealth import Stealth
+from playwright_stealth import stealth_async
 
 async def scrape_with_playwright(
     urls: list[str], timeout_seconds: int, user_agent: str
@@ -29,7 +29,7 @@ async def scrape_with_playwright(
             page = await context.new_page()
 
             # Apply anti-bot stealth scripts (Webgl spoof, navigator.webdriver strip, etc)
-            await Stealth().apply_stealth_async(page)
+            await stealth_async(page)
 
             for url in urls:
                 try:
